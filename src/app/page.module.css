@@ -324,6 +324,33 @@
   margin: 0 4px;
 }
 
+.actionButtons {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.editButton {
+  padding: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.editButton:hover {
+  background: #dbeafe;
+}
+
+.editButton svg {
+  width: 20px;
+  height: 20px;
+  stroke: #3b82f6;
+  stroke-width: 2;
+}
+
 .deleteButton {
   padding: 8px;
   background: transparent;
@@ -345,6 +372,110 @@
   stroke-width: 2;
 }
 
+/* Edit Mode Styles */
+.editMode {
+  width: 100%;
+}
+
+.editInputs {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+
+.editField {
+  flex: 1;
+  min-width: 140px;
+}
+
+.editLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.editInput {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: monospace;
+}
+
+.editInput:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.editButtons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.saveEditButton {
+  flex: 1;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.saveEditButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.saveEditButton svg {
+  width: 18px;
+  height: 18px;
+  stroke: white;
+  stroke-width: 2;
+}
+
+.cancelEditButton {
+  flex: 1;
+  padding: 10px 16px;
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.cancelEditButton:hover {
+  background: #e5e7eb;
+}
+
+.cancelEditButton svg {
+  width: 18px;
+  height: 18px;
+  stroke: #374151;
+  stroke-width: 2;
+}
+
 @media (max-width: 640px) {
   .savedTimeTimes {
     flex-direction: column;
@@ -354,5 +485,23 @@
   
   .timeSeparator {
     display: none;
+  }
+
+  .editInputs {
+    flex-direction: column;
+  }
+
+  .editField {
+    min-width: 100%;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .editButton, .deleteButton {
+    width: 100%;
+    padding: 10px;
   }
 }

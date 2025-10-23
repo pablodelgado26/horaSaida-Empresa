@@ -1,20 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './page.module.css';
 
 export default function Home() {
   const [entryTime, setEntryTime] = useState('');
   const [exitTime, setExitTime] = useState('');
-  const [savedTimes, setSavedTimes] = useState(() => {
-    // Carregar horários salvos do localStorage na inicialização
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('savedTimes');
-      return saved ? JSON.parse(saved) : [];
-    }
-    return [];
-  });
+  const [savedTimes, setSavedTimes] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [editEntry, setEditEntry] = useState('');
+  const [editExit, setEditExit] = useState('');
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Carregar dados do localStorage após montagem no cliente
+  useEffect(() => {
+    setIsMounted(true);
+    const saved = localStorage.getItem('savedTimes');
+    if (saved) {
+      setSavedTimes(JSON.parse(saved));
+    }
+  }, []);
 
   const calculateExitTime = (entry) => {
     if (!entry) {
@@ -74,6 +80,31 @@ export default function Home() {
     const updatedTimes = savedTimes.filter(time => time.id !== id);
     setSavedTimes(updatedTimes);
     localStorage.setItem('savedTimes', JSON.stringify(updatedTimes));
+  };
+
+  const handleEdit = (time) => {
+    setEditingId(time.id);
+    setEditEntry(time.entryTime);
+    setEditExit(time.exitTime);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditEntry('');
+    setEditExit('');
+  };
+
+  const handleSaveEdit = (id) => {
+    const updatedTimes = savedTimes.map(time => 
+      time.id === id 
+        ? { ...time, entryTime: editEntry, exitTime: editExit }
+        : time
+    );
+    setSavedTimes(updatedTimes);
+    localStorage.setItem('savedTimes', JSON.stringify(updatedTimes));
+    setEditingId(null);
+    setEditEntry('');
+    setEditExit('');
   };
 
   return (
@@ -156,31 +187,94 @@ export default function Home() {
         )}
 
         {/* Lista de Horários Salvos */}
-        {savedTimes.length > 0 && (
+        {isMounted && savedTimes.length > 0 && (
           <div className={styles.savedTimesSection}>
             <h2 className={styles.savedTimesTitle}>Horários Salvos</h2>
             <div className={styles.savedTimesList}>
               {savedTimes.map((time) => (
                 <div key={time.id} className={styles.savedTimeItem}>
-                  <div className={styles.savedTimeContent}>
-                    <div className={styles.savedTimeDate}>{time.date}</div>
-                    <div className={styles.savedTimeTimes}>
-                      <span className={styles.timeLabel}>Entrada:</span>
-                      <span className={styles.timeValue}>{time.entryTime}</span>
-                      <span className={styles.timeSeparator}>→</span>
-                      <span className={styles.timeLabel}>Saída:</span>
-                      <span className={styles.timeValue}>{time.exitTime}</span>
+                  {editingId === time.id ? (
+                    // Modo de Edição
+                    <div className={styles.editMode}>
+                      <div className={styles.savedTimeDate}>{time.date}</div>
+                      <div className={styles.editInputs}>
+                        <div className={styles.editField}>
+                          <label className={styles.editLabel}>Entrada:</label>
+                          <input
+                            type="time"
+                            value={editEntry}
+                            onChange={(e) => setEditEntry(e.target.value)}
+                            className={styles.editInput}
+                          />
+                        </div>
+                        <div className={styles.editField}>
+                          <label className={styles.editLabel}>Saída:</label>
+                          <input
+                            type="time"
+                            value={editExit}
+                            onChange={(e) => setEditExit(e.target.value)}
+                            className={styles.editInput}
+                          />
+                        </div>
+                      </div>
+                      <div className={styles.editButtons}>
+                        <button 
+                          onClick={() => handleSaveEdit(time.id)} 
+                          className={styles.saveEditButton}
+                          title="Salvar"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          Salvar
+                        </button>
+                        <button 
+                          onClick={handleCancelEdit} 
+                          className={styles.cancelEditButton}
+                          title="Cancelar"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                          Cancelar
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <button 
-                    onClick={() => handleDelete(time.id)} 
-                    className={styles.deleteButton}
-                    title="Excluir"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
+                  ) : (
+                    // Modo de Visualização
+                    <>
+                      <div className={styles.savedTimeContent}>
+                        <div className={styles.savedTimeDate}>{time.date}</div>
+                        <div className={styles.savedTimeTimes}>
+                          <span className={styles.timeLabel}>Entrada:</span>
+                          <span className={styles.timeValue}>{time.entryTime}</span>
+                          <span className={styles.timeSeparator}>→</span>
+                          <span className={styles.timeLabel}>Saída:</span>
+                          <span className={styles.timeValue}>{time.exitTime}</span>
+                        </div>
+                      </div>
+                      <div className={styles.actionButtons}>
+                        <button 
+                          onClick={() => handleEdit(time)} 
+                          className={styles.editButton}
+                          title="Editar"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(time.id)} 
+                          className={styles.deleteButton}
+                          title="Excluir"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               ))}
             </div>
