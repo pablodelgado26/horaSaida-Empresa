@@ -1,11 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-    title: "escreva o TÍTULO para aparecer na aba do navegador",
-    description: "Projeto pra mostrar tudo que eu sei",
-    icons: {
-        icon: "/icons/favicon.ico",
-    },
+  title: "Calculadora de Hora de Saída",
+  description: "Calcule seu horário de saída baseado em 8h48min de jornada",
 };
 
 export default function RootLayout({ children }) {
