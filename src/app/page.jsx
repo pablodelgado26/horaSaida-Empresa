@@ -15,11 +15,11 @@ export default function Home() {
 
   // Carregar dados do localStorage após montagem no cliente
   useEffect(() => {
-    setIsMounted(true);
     const saved = localStorage.getItem('savedTimes');
     if (saved) {
       setSavedTimes(JSON.parse(saved));
     }
+    setIsMounted(true);
   }, []);
 
   const calculateExitTime = (entry) => {

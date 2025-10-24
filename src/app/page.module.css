@@ -4,22 +4,22 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  padding: 16px;
 }
 
 .card {
   width: 100%;
-  max-width: 480px;
+  max-width: 500px;
   background: white;
   border-radius: 24px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  padding: 40px;
+  padding: 32px;
 }
 
 /* Header Styles */
 .header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .iconWrapper {
@@ -179,16 +179,168 @@
 
 /* Responsive */
 @media (max-width: 640px) {
+  .container {
+    padding: 12px;
+    align-items: flex-start;
+  }
+
   .card {
-    padding: 30px 24px;
+    padding: 24px 20px;
+    border-radius: 20px;
+    margin-top: 12px;
+  }
+
+  .header {
+    margin-bottom: 24px;
+  }
+
+  .iconWrapper {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 16px;
+  }
+
+  .icon {
+    width: 30px;
+    height: 30px;
   }
 
   .title {
-    font-size: 28px;
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .inputSection {
+    margin-bottom: 20px;
+  }
+
+  .timeInput {
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .resultBox {
+    padding: 24px;
   }
 
   .resultTime {
-    font-size: 48px;
+    font-size: 42px;
+  }
+
+  .resultInfo {
+    font-size: 13px;
+  }
+
+  .saveButton {
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+
+  .savedTimesSection {
+    margin-top: 24px;
+    padding-top: 24px;
+  }
+
+  .savedTimesTitle {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .savedTimeItem {
+    padding: 14px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .savedTimeDate {
+    font-size: 11px;
+  }
+
+  .savedTimeTimes {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .timeLabel {
+    font-size: 12px;
+  }
+
+  .timeValue {
+    font-size: 15px;
+  }
+  
+  .timeSeparator {
+    display: none;
+  }
+
+  .actionButtons {
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .editButton, .deleteButton {
+    width: auto;
+  }
+
+  .editInputs {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .editField {
+    min-width: 100%;
+  }
+
+  .editInput {
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  .editButtons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .saveEditButton,
+  .cancelEditButton {
+    width: 100%;
+  }
+
+  .infoCard {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .infoText {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    padding: 8px;
+  }
+
+  .card {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .resultTime {
+    font-size: 36px;
+  }
+
+  .timeInput {
+    font-size: 15px;
   }
 }
 
